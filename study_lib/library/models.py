@@ -6,7 +6,7 @@ class Book(models.Model):
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, verbose_name='автор',
                                related_name='books')
     description = models.TextField(verbose_name='описание')
-    image = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='изображение')
+    image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, verbose_name='изображение')
     pages = models.IntegerField(null=True, blank=True, verbose_name='количество страниц')
     price = models.IntegerField(null=True, verbose_name='цена')
     cover = models.CharField(max_length=200, blank=True, verbose_name='обложка')

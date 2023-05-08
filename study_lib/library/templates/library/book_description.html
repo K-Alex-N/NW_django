@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="card mb-3">
-    <img src="{{ book.image.url }}" class="float-start" alt="..." width="200">
+    {% include 'library/inc/_book_image.html' %}
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <h4><strong>{{ book.name }}</strong></h4>
