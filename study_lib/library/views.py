@@ -17,7 +17,7 @@ def page_not_found(request, exception):
 
 
 def all_books(request):
-    books = Book.objects.filter(is_visible=True)
+    books = Book.objects.filter(is_not_visible=False)
     context = {
         'title': 'All books',
         'books': books
