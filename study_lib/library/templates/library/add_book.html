@@ -1,13 +1,36 @@
 {% extends 'base.html' %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
-<h1>Добавить книгу</h1>
-<form action="{% url 'add_book' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-        {{ form }}
-    </table>
-    <input type="submit" value="Добавить книгу">
-</form>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-7"> <!-- ширина. можно больше 8ми -->
+            <div class="card shadow-lg mb-5">
+                <div class="card-body p-sm-5">
+                    <h2 class="text-center text-dark mb-4">Добавить книгу</h2>
+                    <form action="{% url 'add_book' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">{{ form.name }}</div>
+                        <div class="mb-3"> {{ form.author }}
+                            <small class="form-text">Если автора нет в списке, то вначале необходимо его <a href="{% url 'all_books' %}">добавить</a>.</small>
+                        </div>
+                        <div class="mb-3">{{ form.description }}</div>
+                        <div class="mb-3">{{ form.image }}</div>
+                        <div class="mb-3">{{ form.pages }}</div>
+                        <div class="mb-3">{{ form.cover }}</div>
+                        <div class="mb-3">{{ form.dimensions }}</div>
+                        <div class="mb-3">{{ form.public_date }}</div>
+                        <div class="mb-3">{{ form.price }}</div>
+                        <div class="mb-3"> {{ form.is_not_visible }}
+                            <label class="form-check-label"
+                                   for="{{ form.is_not_visible.id_for_label }}">{{form.is_not_visible.label}}</label>
+                        </div>
+                        <button class="btn btn-primary d-block w-100" type="submit">Добавить книгу</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
