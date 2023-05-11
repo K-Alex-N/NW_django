@@ -6,12 +6,13 @@ from library.models import Author, Book
 class AddBookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        msg = r'Если автора нет в списке, то вначале необходимо его <a href="/all_books/">создать</a>.'
+        msg = 'Если автора нет в списке, то вначале необходимо его <a href="/all_books/">создать</a>.'
         self.fields['author'].help_text = msg
 
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = ['name', 'author', 'description', 'image', 'pages', 'cover', 'dimensions', 'public_date', 'price',
+                  'is_not_visible']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название книги'}),
             'author': forms.Select(attrs={'class': 'form-select'}),
@@ -20,32 +21,22 @@ class AddBookForm(forms.ModelForm):
             'pages': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество страниц'}),
             'cover': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Обложка'}),
             'dimensions': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Размеры'}),
-            'public_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Дата публикации'}),
+            'public_date': forms.DateInput(
+                attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Дата публикации'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Цена'}),
             'is_not_visible': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox'})}
 
     def clean(self):
-
         super(AddBookForm, self).clean()
-        username = self.cleaned_data.get('username')
-        text = self.cleaned_data.get('text')
+        description = self.cleaned_data.get('description')
+        price = self.cleaned_data.get('price')
 
-        if len(username) < 5:
-            self._errors['username'] = self.error_class([
-                'Minimum 5 characters required'])
-        if len(text) < 10:
-            self._errors['text'] = self.error_class([
-                'Post Should Contain a minimum of 10 characters'])
+        if not description or len(description.split()) < 5:
+            self._errors['description'] = self.error_class(['Требуется минимум 5 слов.'])
+        if not price or price < 10:
+            self._errors['price'] = self.error_class(['Минимальная цена - 10.'])
 
         return self.cleaned_data
-
-    # def clean_name(self):
-    #     name = self.cleaned_data['name']
-    #     if len(name) < 3:
-    #         raise forms.ValidationError('Длина меньше 3х символов')
-    #
-    #     return name
-
 
 # class AddBookForm(forms.Form):
 #     name = forms.CharField(
@@ -108,7 +99,6 @@ class AddBookForm(forms.ModelForm):
 #         widget=forms.CheckboxInput(attrs={
 #             'class': 'form-check-input',
 #             'type': 'checkbox'}))
-
 
 class AuthorForm(forms.ModelForm):
     class Meta:

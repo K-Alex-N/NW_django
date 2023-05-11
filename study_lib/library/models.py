@@ -28,7 +28,7 @@ class Book(models.Model):
 
 class Author(models.Model):
     name = models.CharField(max_length=200, verbose_name='автор')
-    biography = models.CharField(max_length=200, blank=True, verbose_name='биография')
+    biography = models.TextField(blank=True, verbose_name='биография')
 
     def __str__(self):
         return self.name
@@ -45,6 +45,9 @@ class Order(models.Model):
 
     books = models.ManyToManyField(Book, through='BookOrder')
 
+    def __str__(self):
+        return str(self.pk)
+
     class Meta:
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
@@ -56,6 +59,9 @@ class BookOrder(models.Model):
     quantity = models.IntegerField()
     price = models.IntegerField()
 
+    def __str__(self):
+        return str(self.pk)
+
     class Meta:
-        verbose_name = 'книга_заказ'
-        verbose_name_plural = 'книги_заказы'
+        verbose_name = 'позиция заказа'
+        verbose_name_plural = 'позиции заказов'
