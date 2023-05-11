@@ -3,24 +3,37 @@
 {% block content %}
 <div class="container">
     <div class="row d-flex justify-content-center">
-        <div class="col-7"> <!-- ширина. можно больше 8ми -->
+        <div class="col-6"> <!-- ширина. можно больше 8ми -->
             <div class="card shadow-lg mb-5">
                 <div class="card-body p-sm-5">
                     <h2 class="text-center text-dark mb-4">Добавить книгу</h2>
-                    <form action="{% url 'add_book' %}" method="post" enctype="multipart/form-data">
+                    <form class="needs-validation" novalidate action="{% url 'add_book' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
+
+                        <div class="form-error">{{ form.non_field_errors }}</div>
+
                         <div class="mb-3">{{ form.name }}</div>
+                        {% if form.name.errors %}
+                        <div class="alert alert-danger" style="padding: 8px;">{{ form.name.errors | striptags }}</div>
+                        {% endif %}
                         <div class="mb-3"> {{ form.author }}
-                            <small class="form-text">Если автора нет в списке, то вначале необходимо его <a href="{% url 'all_books' %}">добавить</a>.</small>
+                            <small class="form-text">Если автора нет в списке, то вначале необходимо его <a href="{% url 'all_books' %}">создать</a>.</small>
                         </div>
-                        <div class="mb-3">{{ form.description }}</div>
+                        {% if form.author.errors %}
+                        <div class="alert alert-danger" style="padding: 8px;">{{ form.author.errors | striptags }}</div>
+                        {% endif %}
+                        <div class="mb-3">{{ form.description }}
+                            {% if form.description.help_text %}
+                            <small class="form-text">{{ form.description.help_text|safe }}</small>
+                                {% endif %}
+                        </div>
                         <div class="mb-3">{{ form.image }}</div>
                         <div class="mb-3">{{ form.pages }}</div>
                         <div class="mb-3">{{ form.cover }}</div>
                         <div class="mb-3">{{ form.dimensions }}</div>
                         <div class="mb-3">{{ form.public_date }}</div>
                         <div class="mb-3">{{ form.price }}</div>
-                        <div class="mb-3"> {{ form.is_not_visible }}
+                        <div class="mb-3">{{ form.is_not_visible }}
                             <label class="form-check-label"
                                    for="{{ form.is_not_visible.id_for_label }}">{{form.is_not_visible.label}}</label>
                         </div>

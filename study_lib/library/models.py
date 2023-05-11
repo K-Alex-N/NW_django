@@ -6,13 +6,13 @@ class Book(models.Model):
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, verbose_name='автор', related_name='books')
     description = models.TextField(verbose_name='описание')
     price = models.IntegerField(verbose_name='цена')
-    is_not_visible = models.BooleanField(default=False, verbose_name='скрыто?')
+    is_not_visible = models.BooleanField(default=False, verbose_name='скрыть')
     # blank=True
     image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, verbose_name='изображение')
-    pages = models.IntegerField(blank=True, verbose_name='количество страниц')
+    pages = models.IntegerField(blank=True, null=True, verbose_name='количество страниц')
     cover = models.CharField(max_length=200, blank=True, verbose_name='обложка')
     dimensions = models.CharField(max_length=200, blank=True, verbose_name='размеры')
-    public_date = models.DateField(blank=True, verbose_name='дата публикации')
+    public_date = models.DateField(blank=True, null=True, verbose_name='дата публикации')
     # autofill
     date_create = models.DateField(auto_now_add=True, verbose_name='дата создания карточки товара')
     date_update = models.DateField(auto_now=True, verbose_name='дата изменения карточки товара')

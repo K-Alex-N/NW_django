@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from library.forms import BookForm
+from library.forms import AddBookForm
 from library.models import Book
 
 
@@ -27,18 +27,22 @@ def all_books(request):
 
 def add_book(request):
     if request.method == "POST":
-        form = BookForm(request.POST, request.FILES)
+        form = AddBookForm(request.POST, request.FILES)
         if form.is_valid():
-            Book.objects.create(**form.cleaned_data)
-        return redirect('all_books')
+            form.save()
+            return redirect('all_books')
+    else:
+        form = AddBookForm()
 
-    form = BookForm()
     return render(request, 'library/add_book.html', {'form': form})
 
 
 def book_description(request, book_id):
-    book = Book.objects.get(id=book_id)
-    context = {'book': book}
-    return render(request, 'library/book_description.html', context=context)
+    book = get_object_or_404(Book, pk=book_id)
+    return render(request, 'library/book_description.html', {'book': book})
+
+
+def test(request):
+    return render(request, 'library/test.html')
 
 # raise Http404() - если нужно перенаправиль на 404

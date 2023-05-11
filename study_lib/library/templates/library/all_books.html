@@ -1,19 +1,20 @@
 {% extends 'base.html' %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
-<h1 class="text-center">Все книги</h1>
 {% for book in books %}
-<div class="card mb-3" style="max-width: 540px;">
-    <div class="row g-0">
-        <div class="col-md-4">
-            {% include 'library/inc/_book_image.html' %}
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">{{ book.author }}</h5>
-                <p class="card-text">{{ book.name }}</p>
-                <p class="card-text"><small class="text-muted">{{ book.price }} руб.</small></p>
-                <a href="{% url 'book_description' book.id %}">Подробнее</a>
+<div class="col-7">
+    <div class="card shadow-lg mb-3">
+        <div class="row">
+            <div class="col-3">
+                {% include 'library/inc/_book_image.html' %}
+            </div>
+            <div class="col">
+                <div class="card-body ">
+                    <h5 class="card-title">{{ book.author }}</h5>
+                    <p class="card-text">{{ book.name }}</p>
+                    <p class="card-text"><small class="text-muted">{{ book.price }} руб.</small></p>
+                    <a href="{% url 'book_description' book.id %}">Подробнее</a>
+                </div>
             </div>
         </div>
     </div>
