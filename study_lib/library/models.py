@@ -3,6 +3,7 @@ from django.db import models
 
 class Book(models.Model):
     name = models.CharField(max_length=200, verbose_name='название')
+    # slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, verbose_name='автор', related_name='books')
     description = models.TextField(verbose_name='описание')
     price = models.IntegerField(verbose_name='цена')
@@ -21,13 +22,17 @@ class Book(models.Model):
     def __str__(self):
         return self.name
 
+    # def get_absolute_url(self):
+    #     return reverse('post', kwargs={'post_slug': self.slug})
+
     class Meta:
         verbose_name = 'книга'
         verbose_name_plural = 'книги'
+        ordering = ['date_create']
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=200, verbose_name='автор')
+    name = models.CharField(max_length=200, db_index=True, verbose_name='автор')
     biography = models.TextField(blank=True, verbose_name='биография')
 
     def __str__(self):
@@ -51,6 +56,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
+        ordering = ['order_date']
 
 
 class BookOrder(models.Model):

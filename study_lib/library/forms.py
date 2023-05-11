@@ -6,7 +6,7 @@ from library.models import Author, Book
 class AddBookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        msg = 'Если автора нет в списке, то вначале необходимо его <a href="/all_books/">создать</a>.'
+        msg = 'Если автора нет в списке, то вначале необходимо его <a href="/add_author/">создать</a>.'
         self.fields['author'].help_text = msg
 
     class Meta:
@@ -21,8 +21,7 @@ class AddBookForm(forms.ModelForm):
             'pages': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество страниц'}),
             'cover': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Обложка'}),
             'dimensions': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Размеры'}),
-            'public_date': forms.DateInput(
-                attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Дата публикации'}),
+            'public_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Дата публикации'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Цена'}),
             'is_not_visible': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox'})}
 
@@ -34,8 +33,7 @@ class AddBookForm(forms.ModelForm):
         if not description or len(description.split()) < 5:
             self._errors['description'] = self.error_class(['Требуется минимум 5 слов.'])
         if not price or price < 10:
-            self._errors['price'] = self.error_class(['Минимальная цена - 10.'])
-
+            self._errors['price'] = self.error_class(['Цена должна быть минимум 10.'])
         return self.cleaned_data
 
 # class AddBookForm(forms.Form):
@@ -100,7 +98,7 @@ class AddBookForm(forms.ModelForm):
 #             'class': 'form-check-input',
 #             'type': 'checkbox'}))
 
-class AuthorForm(forms.ModelForm):
+class AddAuthorForm(forms.ModelForm):
     class Meta:
         model = Author
         fields = '__all__'
