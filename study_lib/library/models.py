@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 
 class Book(models.Model):
     name = models.CharField(max_length=200, verbose_name='название')
@@ -22,8 +22,8 @@ class Book(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('post', kwargs={'post_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('book_description', kwargs={'book_id': self.pk})
 
     class Meta:
         verbose_name = 'книга'

@@ -1,5 +1,5 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseNotFound
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
@@ -18,10 +18,14 @@ def home(request):
 def page_not_found(request, exception):
     return HttpResponseNotFound('not found')
 
-class BooksView(DataMixin, ListView):
+
+# ---------------------------------------------------------------- #
+# Book
+# ---------------------------------------------------------------- #
+
+class BookList(DataMixin, ListView):
     model = Book
-    # queryset = Book.objects.filter(is_not_visible=False)
-    template_name = 'library/all_books.html'
+    queryset = Book.objects.filter(is_not_visible=False)
     context_object_name = 'books'
 
     def get_context_data(self, **kwargs):
@@ -30,20 +34,8 @@ class BooksView(DataMixin, ListView):
         return context
 
 
-class AddBook(DataMixin, CreateView):
-    form_class = AddBookForm
-    template_name = 'library/add_book.html'
-    success_url = reverse_lazy('all_books')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(self.get_menu(title='Добавить книгу'))
-        return context
-
-
 class BookDetail(DataMixin, DetailView):
     model = Book
-    template_name = 'library/book_description.html'
     pk_url_kwarg = 'book_id'
     context_object_name = 'book'
 
@@ -52,3 +44,13 @@ class BookDetail(DataMixin, DetailView):
         context.update(self.get_menu(title=context['book']))
         return context
 
+
+class BookCreate(DataMixin, CreateView):
+    model = Book
+    form_class = AddBookForm
+    success_url = reverse_lazy('all_books')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(self.get_menu(title='Добавить книгу'))
+        return context

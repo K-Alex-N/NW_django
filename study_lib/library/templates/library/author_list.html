@@ -13,7 +13,7 @@
                         <h5 class="card-title">{{ book.author }}</h5>
                         <p class="card-text">{{ book.name }}</p>
                         <p class="card-text"><small class="text-muted">{{ book.price }} руб.</small></p>
-                        <a href="{% url 'book_description' book.id %}">Подробнее</a>
+                        <a href="{{ book.get_absolute_url }}">Подробнее</a>
                     </div>
                 </div>
             </div>
