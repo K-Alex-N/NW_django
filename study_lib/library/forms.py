@@ -1,8 +1,47 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 
 from library.models import Author, Book
 
 
+# ---------------------------------------------------------------- #
+# Auth
+# ---------------------------------------------------------------- #
+
+class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Логин'}))
+
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'type': 'email', 'placeholder': 'Email'}))
+
+    password1 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'type': 'password', 'placeholder': 'Пароль'}))
+
+    password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'type': 'password', 'placeholder': 'Повторите пароль'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'type': 'text', 'placeholder': 'Логин'}))
+
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'type': 'password', 'placeholder': 'Пароль'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+
+# ---------------------------------------------------------------- #
+# Book
+# ---------------------------------------------------------------- #
 class AddBookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -21,7 +60,8 @@ class AddBookForm(forms.ModelForm):
             'pages': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество страниц'}),
             'cover': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Обложка'}),
             'dimensions': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Размеры'}),
-            'public_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Дата публикации'}),
+            'public_date': forms.DateInput(
+                attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Дата публикации'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Цена'}),
             'is_not_visible': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox'})}
 
@@ -30,11 +70,19 @@ class AddBookForm(forms.ModelForm):
         description = self.cleaned_data.get('description')
         price = self.cleaned_data.get('price')
 
+        # добавить проверку на уникальность названия книги
+        # https://www.agiliq.com/blog/2019/01/django-createview/
+        # def clean_title(self):
+        #     title = self.cleaned_data['title']
+        #     if Book.objects.filter(user=self.user, title=title).exists():
+        #         raise forms.ValidationError("You have already written a book with same title.")
+        #     return title
         if not description or len(description.split()) < 5:
             self._errors['description'] = self.error_class(['Требуется минимум 5 слов.'])
         if not price or price < 10:
             self._errors['price'] = self.error_class(['Цена должна быть минимум 10.'])
         return self.cleaned_data
+
 
 # class AddBookForm(forms.Form):
 #     name = forms.CharField(

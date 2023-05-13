@@ -13,8 +13,17 @@
 <div class="container bg-white">
     <div class="row d-flex justify-content-center">
         {% include 'inc/_header.html' %}
-        {% block content %}Контент по умолчанию{% endblock %}
-        {% include 'inc/_paginator.html' %}
+        <div class="row justify-content-md-center">
+            <div class="col">
+                {% block content %}Контент по умолчанию{% endblock %}
+                {% include 'inc/_paginator.html' %}
+            </div>
+            <div class="col-md-auto text-end">
+                {% if user.is_authenticated %}
+                    {% include 'inc/_right_menu.html' %}
+                {% endif %}
+            </div>
+        </div>
         {% include 'inc/_footer.html' %}
     </div>
 </div>

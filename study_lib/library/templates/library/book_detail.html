@@ -2,21 +2,41 @@
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
 
-<div class="card mb-3">
-    {% include 'library/inc/_book_image.html' %}
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-            <h4><strong>{{ book.name }}</strong></h4>
-            <p class="card-text">{{ book.author }}</p>
-            <p class="card-text">{{ book.description }}</p>
-        </li>
-        <li class="list-group-item"><strong>Количество страниц: </strong>{{ book.pages }}</li>
-        <li class="list-group-item"><strong>Обложка: </strong>{{ book.cover }}</li>
-        <li class="list-group-item"><strong>Размеры: </strong>{{ book.dimensions }}</li>
-        <li class="list-group-item"><strong>Дата публикации: </strong>{{ book.public_date|date:"d m Y" }}</li>
-        <li class="list-group-item"><strong>Цена: </strong>{{ book.price }} руб.</li>
-        <li class="list-group-item"></li>
-    </ul>
+
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-8"> <!-- ширина. можно больше 8ми -->
+            <div class="card shadow-lg mb-5">
+                <div class="card-body p-sm-5">
+                    <h2 class="text-center text-dark mb-4">{{ book.name }}</h2>
+
+                    {% include 'library/inc/_book_image.html' %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <h4><strong>{{ book.author }}</strong></h4>
+                            <p class="card-text">{{ book.description }}</p>
+                        </li>
+                        <li class="list-group-item"><strong>Количество страниц: </strong>{{ book.pages }}</li>
+                        <li class="list-group-item"><strong>Обложка: </strong>{{ book.cover }}</li>
+                        <li class="list-group-item"><strong>Размеры: </strong>{{ book.dimensions }}</li>
+                        <li class="list-group-item"><strong>Дата публикации: </strong>{{ book.public_date|date:"d m Y" }}</li>
+                        <li class="list-group-item"><strong>Цена: </strong>{{ book.price }} руб.</li>
+                    </ul>
+                    <div class="row text-end">
+                        <div class="col">
+                            <a href="{% url 'book_update' book.id %}" class="btn btn-outline-primary me-2" type="button">Изменить</a>
+                        </div>
+                        <div class="col-auto">
+                            <form action="{% url 'book_delete' book.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="btn btn-outline-danger me-2" type="submit" value="Удалить">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

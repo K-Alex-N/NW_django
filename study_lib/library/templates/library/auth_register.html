@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6"> <!-- ширина. можно больше 8ми -->
+            <div class="card shadow-lg mb-5">
+                <div class="card-body p-sm-5">
+                    <h2 class="text-center text-dark mb-4">Регистрация</h2>
+                    <form class="needs-validation" novalidate method="post" enctype="multipart/form-data">
+                        {% include 'library/inc/_fill_in_form.html' %}
+                        <button class="btn btn-primary d-block w-100" type="submit">Зарегистрироваться</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

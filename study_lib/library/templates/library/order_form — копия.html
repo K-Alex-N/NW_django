@@ -3,10 +3,10 @@
 {% block content %}
 <div class="container">
     <div class="row d-flex justify-content-center">
-        <div class="col-8"> <!-- ширина. можно больше 8ми -->
+        <div class="col-6"> <!-- ширина. можно больше 8ми -->
             <div class="card shadow-lg mb-5">
                 <div class="card-body p-sm-5">
-                    <h2 class="text-center text-dark mb-4">{{ title }}</h2>
+                    <h2 class="text-center text-dark mb-4">Добавить книгу</h2>
                     <form class="needs-validation" novalidate method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div>{{ form.non_field_errors }}</div>
@@ -24,7 +24,7 @@
                                 {% endif %}
                             </div>
                         {% endfor %}
-                        <button class="btn btn-primary d-block w-100" type="submit">Сохранить</button>
+                        <button class="btn btn-primary d-block w-100" type="submit">Добавить книгу</button>
                     </form>
                 </div>
             </div>

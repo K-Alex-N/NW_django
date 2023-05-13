@@ -1,0 +1,18 @@
+{% csrf_token %}
+{% if form.non_field_errors %}
+    <div class="alert alert-danger">{{ form.non_field_errors | striptags }}</div>
+{% endif %}
+{% for f in form %}
+    <div class="mb-3">
+        {{ f }}
+        {% if f.help_text %}
+            <small class="form-text">{{ f.help_text | safe }}</small>
+        {% endif %}
+        {% if forloop.counter == 10 %}
+            <label class="form-check-label" for="{{ f.id_for_label }}">{{f.label}}</label>
+        {% endif %}
+        {% if f.errors %}
+            <div class="alert alert-danger" style="padding: 4px;">{{ f.errors | striptags }}</div>
+        {% endif %}
+    </div>
+{% endfor %}

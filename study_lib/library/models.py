@@ -1,10 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
+
 class Book(models.Model):
-    name = models.CharField(max_length=200, verbose_name='название')
+    name = models.CharField(max_length=200, unique=True, verbose_name='название')
     # slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, verbose_name='автор', related_name='books')
+    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, verbose_name='автор')
+    publisher = models.ForeignKey('Publisher', on_delete=models.SET_NULL, null=True, verbose_name='издательство')
     description = models.TextField(verbose_name='описание')
     price = models.IntegerField(verbose_name='цена')
     is_not_visible = models.BooleanField(default=False, verbose_name='скрыть')
@@ -17,7 +20,6 @@ class Book(models.Model):
     # autofill
     date_create = models.DateField(auto_now_add=True, verbose_name='дата создания карточки товара')
     date_update = models.DateField(auto_now=True, verbose_name='дата изменения карточки товара')
-
 
     def __str__(self):
         return self.name
@@ -41,6 +43,18 @@ class Author(models.Model):
     class Meta:
         verbose_name = 'автор'
         verbose_name_plural = 'авторы'
+
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=200, db_index=True, verbose_name='издательство')
+    description = models.TextField(blank=True, verbose_name='описание')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'издательство'
+        verbose_name_plural = 'издательства'
 
 
 class Order(models.Model):
