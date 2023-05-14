@@ -21,6 +21,12 @@ def home(request):
 def page_not_found(request, exception):
     return HttpResponseNotFound('not found')
 
+# ---------------------------------------------------------------- #
+# Feedback
+# ---------------------------------------------------------------- #
+
+def feedback():
+
 
 # ---------------------------------------------------------------- #
 # Auth
@@ -52,7 +58,7 @@ class LoginUser(DataMixin, LoginView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('all_books')
+        return reverse_lazy('book_list')
 
 
 def logout_user(request):
@@ -77,7 +83,7 @@ class BookList(DataMixin, ListView):
 
 class BookDetail(DataMixin, DetailView):
     model = Book
-    pk_url_kwarg = 'book_id'
+    pk_url_kwarg = 'id'
     context_object_name = 'book'
 
     def get_context_data(self, **kwargs):
@@ -89,9 +95,9 @@ class BookDetail(DataMixin, DetailView):
 class BookCreate(DataMixin, CreateView):
     model = Book
     form_class = AddBookForm
-    success_url = reverse_lazy('all_books')
+    success_url = reverse_lazy('book_list')
 
-    # success_url = reverse_lazy('book_description', )  # не работает!!!
+    # success_url = reverse_lazy('book_detail', )  # не работает!!!
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -116,8 +122,8 @@ class BookCreate(DataMixin, CreateView):
 class BookUpdate(DataMixin, UpdateView):
     model = Book
     form_class = AddBookForm
-    pk_url_kwarg = 'book_id'
-    success_url = reverse_lazy('all_books')
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('book_list')
 
     # success_url = reverse_lazy('book.get_absolute_url()') # нужно проверить!!!
 
@@ -129,8 +135,8 @@ class BookUpdate(DataMixin, UpdateView):
 
 class BookDelete(DataMixin, DeleteView):
     model = Book
-    pk_url_kwarg = 'book_id'
-    success_url = reverse_lazy('all_books')
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('book_list')
 
 # ---------------------------------------------------------------- #
 # Author
@@ -138,31 +144,31 @@ class BookDelete(DataMixin, DeleteView):
 
 class AuthorList(DataMixin, ListView):
     model = Author
-    # context_object_name = 'books'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print('\n' * 5)
+        print('!!!!!!!', context)
         context.update(self.get_menu(title='Список авторов'))
         return context
 
 
 class AuthorDetail(DataMixin, DetailView):
     model = Author
-    pk_url_kwarg = 'book_id'
-    context_object_name = 'book'
+    pk_url_kwarg = 'id'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update(self.get_menu(title=context['book']))
+        context.update(self.get_menu(title=context['object']))
         return context
 
 
 class AuthorCreate(DataMixin, CreateView):
-    model = Book
-    form_class = AddBookForm
-    success_url = reverse_lazy('all_books')
+    model = Author
+    # form_class = AddBookForm
+    # success_url = reverse_lazy('book_list')
 
-    # success_url = reverse_lazy('book_description', )  # не работает!!!
+    # success_url = reverse_lazy('book_detail', )  # не работает!!!
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -185,10 +191,10 @@ class AuthorCreate(DataMixin, CreateView):
 
 
 class AuthorUpdate(DataMixin, UpdateView):
-    model = Book
-    form_class = AddBookForm
-    pk_url_kwarg = 'book_id'
-    success_url = reverse_lazy('all_books')
+    model = Author
+    # form_class = AddBookForm
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('book_list')
 
     # success_url = reverse_lazy('book.get_absolute_url()') # нужно проверить!!!
 
@@ -200,5 +206,5 @@ class AuthorUpdate(DataMixin, UpdateView):
 
 class AuthorDelete(DataMixin, DeleteView):
     model = Book
-    pk_url_kwarg = 'book_id'
-    success_url = reverse_lazy('all_books')
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('book_list')

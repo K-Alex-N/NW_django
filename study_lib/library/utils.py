@@ -2,9 +2,10 @@ class Menu():
     bottom_center = [
         {'title': 'Home', 'url': '/'},
         {'title': 'Книги', 'url': '/book/list/'},
+        {'title': 'Обратная связь', 'url': '/feedback/'},
     ]
     right = [
-        {'title': 'Список книг', 'url': 'all_books'},
+        {'title': 'Список книг', 'url': 'book_list'},
         {'title': 'Добавить книгу', 'url': 'book_create'},
         {'title': 'Список авторов', 'url': 'author_list'},
         # {'title': 'Добавить автора', 'url': 'author_list'},

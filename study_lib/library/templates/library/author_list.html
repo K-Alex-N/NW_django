@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
-{% for book in books %}
+{% for x in object_list %}
     <div class="col-7">
         <div class="card shadow-lg mb-3">
             <div class="row">
-                <div class="col-3">
-                    {% include 'library/inc/_book_image.html' %}
-                </div>
                 <div class="col">
                     <div class="card-body ">
-                        <h5 class="card-title">{{ book.author }}</h5>
-                        <p class="card-text">{{ book.name }}</p>
-                        <p class="card-text"><small class="text-muted">{{ book.price }} руб.</small></p>
-                        <a href="{{ book.get_absolute_url }}">Подробнее</a>
+                        <p class="card-text">{{ x.name }}</p>
+                        <p class="card-text">{{ x.biography }}</p>
+                        <a href="{{ x.get_absolute_url }}">Подробнее</a>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@ class Book(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('book_description', kwargs={'book_id': self.pk})
+        return reverse('book_detail', kwargs={'id': self.pk})
 
     class Meta:
         verbose_name = 'книга'
@@ -40,6 +40,9 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('author_detail', kwargs={'id': self.pk})
+
     class Meta:
         verbose_name = 'автор'
         verbose_name_plural = 'авторы'
@@ -48,6 +51,9 @@ class Author(models.Model):
 class Publisher(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='издательство')
     description = models.TextField(blank=True, verbose_name='описание')
+    # contact_name =
+    # email = models.EmailField
+    # phone_number = models.CharField(max_length=)
 
     def __str__(self):
         return self.name
@@ -78,6 +84,7 @@ class BookOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
     price = models.IntegerField()
+    # status = (1: выполнен, 2 принят...)
 
     def __str__(self):
         return str(self.pk)
