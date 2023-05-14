@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
@@ -25,43 +24,50 @@ class Book(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('book_detail', kwargs={'id': self.pk})
+        return reverse('book_detail', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = 'книга'
         verbose_name_plural = 'книги'
-        ordering = ['date_create']
+        ordering = ['id']
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=200, db_index=True, verbose_name='автор')
+    name = models.CharField(max_length=200, unique=True, db_index=True, verbose_name='автор')
     biography = models.TextField(blank=True, verbose_name='биография')
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('author_detail', kwargs={'id': self.pk})
+        return reverse('author_detail', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = 'автор'
         verbose_name_plural = 'авторы'
+        ordering = ['name']
 
 
 class Publisher(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='издательство')
     description = models.TextField(blank=True, verbose_name='описание')
-    # contact_name =
-    # email = models.EmailField
-    # phone_number = models.CharField(max_length=)
+    contact_name = models.CharField(max_length=200, verbose_name='ФИО агента')
+    email = models.EmailField(unique=True, verbose_name='почта')
+    phone_number = models.CharField(max_length=20, unique=True, verbose_name='телефон')
 
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('publisher_detail', kwargs={'pk': self.pk})
+
     class Meta:
         verbose_name = 'издательство'
         verbose_name_plural = 'издательства'
+        ordering = ['id']
 
+
+# изменение (объектов от Order и BookOrder) только в admin panel
 
 class Order(models.Model):
     order_date = models.DateField(auto_now_add=True)
@@ -84,6 +90,7 @@ class BookOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
     price = models.IntegerField()
+
     # status = (1: выполнен, 2 принят...)
 
     def __str__(self):
@@ -92,3 +99,4 @@ class BookOrder(models.Model):
     class Meta:
         verbose_name = 'позиция заказа'
         verbose_name_plural = 'позиции заказов'
+        ordering = ['id']

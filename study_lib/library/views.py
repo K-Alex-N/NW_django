@@ -23,6 +23,7 @@ def home(request):
 def page_not_found(request, exception):
     return HttpResponseNotFound('not found')
 
+
 # ---------------------------------------------------------------- #
 # Feedback
 # ---------------------------------------------------------------- #
@@ -80,115 +81,109 @@ def logout_user(request):
 # Book
 # ---------------------------------------------------------------- #
 
-class BookList(DataMixin, ListView):
+class BookMixin:
     model = Book
-    queryset = Book.objects.filter(is_not_visible=False)
-    context_object_name = 'books'
+    form_class = BookForm
+    paginate_by = 3
+
+
+class BookList(DataMixin, BookMixin, ListView):
     title = 'Список книг'
+    queryset = Book.objects.filter(is_not_visible=False)
 
 
-class BookDetail(DataMixin, DetailView):
-    model = Book
-    pk_url_kwarg = 'id'
-    context_object_name = 'book'
-
+class BookDetail(DataMixin, BookMixin, DetailView):
     def get_title(self):
         return self.object.name
 
 
-class BookCreate(DataMixin, CreateView):
-    model = Book
-    form_class = AddBookForm
-    success_url = reverse_lazy('book_list')
+class BookCreate(DataMixin, BookMixin, CreateView):
     title = 'Добавить книгу'
-    # success_url = reverse_lazy('book_detail', )  # не работает!!!
 
-# class BookCreateView(CreateView):
-#     def get(self, request, *args, **kwargs):
-#         context = {'form': BookCreateForm()}
-#         return render(request, 'books/book-create.html', context)
-#
-#     def post(self, request, *args, **kwargs):
-#         form = BookCreateForm(request.POST)
-#         if form.is_valid():
-#             book = form.save()
-#             book.save()
-#             return HttpResponseRedirect(reverse_lazy('books:detail', args=[book.id]))
-#         return render(request, 'books/book-create.html', {'form': form})
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
-class BookUpdate(DataMixin, UpdateView):
-    model = Book
-    form_class = AddBookForm
-    pk_url_kwarg = 'id'
-    success_url = reverse_lazy('book_list')
+
+class BookUpdate(DataMixin, BookMixin, UpdateView):
     title = 'Изменить книгу'
-    # success_url = reverse_lazy('book.get_absolute_url()') # нужно проверить!!!
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
-class BookDelete(DataMixin, DeleteView):
-    model = Book
-    pk_url_kwarg = 'id'
+class BookDelete(DataMixin, BookMixin, DeleteView):
     success_url = reverse_lazy('book_list')
+
 
 # ---------------------------------------------------------------- #
 # Author
 # ---------------------------------------------------------------- #
 
-class AuthorList(DataMixin, ListView):
+class AuthorMixin:
     model = Author
+    form_class = AuthorForm
+    paginate_by = 5
+
+
+class AuthorList(AuthorMixin, DataMixin, ListView):
     title = 'Список авторов'
 
 
-class AuthorDetail(DataMixin, DetailView):
-    model = Author
-    pk_url_kwarg = 'id'
-
+class AuthorDetail(AuthorMixin, DataMixin, DetailView):
     def get_title(self):
         return self.object.name
 
 
-class AuthorCreate(DataMixin, CreateView):
-    model = Author
-    # form_class = AddBookForm
-    # success_url = reverse_lazy('book_list')
+class AuthorCreate(AuthorMixin, DataMixin, CreateView):
+    title = 'Добавить автора'
 
-    # success_url = reverse_lazy('book_detail', )  # не работает!!!
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(self.get_menu(title='Добавить книгу'))
-        return context
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
-# class BookCreateView(CreateView):
-#     def get(self, request, *args, **kwargs):
-#         context = {'form': BookCreateForm()}
-#         return render(request, 'books/book-create.html', context)
-#
-#     def post(self, request, *args, **kwargs):
-#         form = BookCreateForm(request.POST)
-#         if form.is_valid():
-#             book = form.save()
-#             book.save()
-#             return HttpResponseRedirect(reverse_lazy('books:detail', args=[book.id]))
-#         return render(request, 'books/book-create.html', {'form': form})
+class AuthorUpdate(AuthorMixin, DataMixin, UpdateView):
+    title = 'Изменить автора'
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
-class AuthorUpdate(DataMixin, UpdateView):
-    model = Author
-    # form_class = AddBookForm
-    pk_url_kwarg = 'id'
-    success_url = reverse_lazy('book_list')
-
-    # success_url = reverse_lazy('book.get_absolute_url()') # нужно проверить!!!
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(self.get_menu(title='Изменить книгу'))
-        return context
+class AuthorDelete(AuthorMixin, DataMixin, DeleteView):
+    success_url = reverse_lazy('author_list')
 
 
-class AuthorDelete(DataMixin, DeleteView):
-    model = Book
-    pk_url_kwarg = 'id'
-    success_url = reverse_lazy('book_list')
+# ---------------------------------------------------------------- #
+# Publisher
+# ---------------------------------------------------------------- #
+
+class PublisherMixin:
+    model = Publisher
+    form_class = PublisherForm
+    paginate_by = 5
+
+
+class PublisherList(PublisherMixin, DataMixin, ListView):
+    title = 'Список издательств'
+
+
+class PublisherDetail(PublisherMixin, DataMixin, DetailView):
+    def get_title(self):
+        return self.object.name
+
+
+class PublisherCreate(PublisherMixin, DataMixin, CreateView):
+    title = 'Добавить издательство'
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class PublisherUpdate(PublisherMixin, DataMixin, UpdateView):
+    title = 'Изменить издательство'
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class PublisherDelete(PublisherMixin, DataMixin, DeleteView):
+    success_url = reverse_lazy('publisher_list')

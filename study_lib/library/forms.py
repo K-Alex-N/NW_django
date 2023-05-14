@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from library.models import Author, Book
+from library.models import *
 
 # ---------------------------------------------------------------- #
 # Feedback
@@ -63,7 +63,8 @@ class LoginUserForm(AuthenticationForm):
 # ---------------------------------------------------------------- #
 # Book
 # ---------------------------------------------------------------- #
-class AddBookForm(forms.ModelForm):
+
+class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         msg = 'Если автора нет в списке, то вначале необходимо его <a href="/add_author/">создать</a>.'
@@ -87,17 +88,10 @@ class AddBookForm(forms.ModelForm):
             'is_not_visible': forms.CheckboxInput(attrs={'class': 'form-check-input', 'type': 'checkbox'})}
 
     def clean(self):
-        super(AddBookForm, self).clean()
+        super(BookForm, self).clean()
         description = self.cleaned_data.get('description')
         price = self.cleaned_data.get('price')
 
-        # добавить проверку на уникальность названия книги
-        # https://www.agiliq.com/blog/2019/01/django-createview/
-        # def clean_title(self):
-        #     title = self.cleaned_data['title']
-        #     if Book.objects.filter(user=self.user, title=title).exists():
-        #         raise forms.ValidationError("You have already written a book with same title.")
-        #     return title
         if not description or len(description.split()) < 5:
             self._errors['description'] = self.error_class(['Требуется минимум 5 слов.'])
         if not price or price < 10:
@@ -167,7 +161,25 @@ class AddBookForm(forms.ModelForm):
 #             'class': 'form-check-input',
 #             'type': 'checkbox'}))
 
-class AddAuthorForm(forms.ModelForm):
+class AuthorForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = '__all__'
+        fields = ['name',  'biography']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Автор'}),
+            'biography': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Биография', 'rows': 7})
+        }
+
+
+class PublisherForm(forms.ModelForm):
+    class Meta:
+        model = Publisher
+        fields = ['name', 'description', 'contact_name', 'email', 'phone_number']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'издательство'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'описание', 'rows': 7}),
+            'contact_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ФИО агента'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'почта'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'телефон'}),
+        }
+

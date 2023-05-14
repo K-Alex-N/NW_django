@@ -5,24 +5,28 @@ from .views import *
 urlpatterns = [
     path('', home, name='home'),
 
-    path('register/', RegisterUser.as_view(), name='register'),
-    path('login/', LoginUser.as_view(), name='login'),
-    path('logout/', logout_user, name='logout'),
+    path('register/',   RegisterUser.as_view(), name='register'),
+    path('login/',      LoginUser.as_view(),    name='login'),
+    path('logout/',     logout_user,            name='logout'),
 
     path('feedback/', feedback, name='feedback'),
 
-    path('book/list/',             BookList.as_view(), name='book_list'),
-    path('book/<int:id>/',         BookDetail.as_view(), name='book_detail'),
+    path('book/list/',             BookList.as_view(),   name='book_list'),
+    path('book/<int:pk>/',         BookDetail.as_view(), name='book_detail'),
     path('book/add/',              BookCreate.as_view(), name='book_create'),
-    path('book/update/<int:id>/',  BookUpdate.as_view(), name='book_update'),
-    path('book/delete/<int:id>/',  BookDelete.as_view(), name='book_delete'),
+    path('book/update/<int:pk>/',  BookUpdate.as_view(), name='book_update'),
+    path('book/delete/<int:pk>/',  BookDelete.as_view(), name='book_delete'),
 
-    path('author/list/',               AuthorList.as_view(), name='author_list'),
-    path('author/<int:id>/',           AuthorDetail.as_view(), name='author_detail'),
+    path('author/list/',               AuthorList.as_view(),   name='author_list'),
+    path('author/<int:pk>/',           AuthorDetail.as_view(), name='author_detail'),
     path('author/add/',                AuthorCreate.as_view(), name='author_create'),
-    path('author/update/<int:id>/',    AuthorUpdate.as_view(), name='author_update'),
-    path('author/delete/<int:id>/',    AuthorDelete.as_view(), name='author_delete'),
+    path('author/update/<int:pk>/',    AuthorUpdate.as_view(), name='author_update'),
+    path('author/delete/<int:pk>/',    AuthorDelete.as_view(), name='author_delete'),
 
+    path('publisher/list/',             PublisherList.as_view(),   name='publisher_list'),
+    path('publisher/<int:pk>/',         PublisherDetail.as_view(), name='publisher_detail'),
+    path('publisher/add/',              PublisherCreate.as_view(), name='publisher_create'),
+    path('publisher/update/<int:pk>/',  PublisherUpdate.as_view(), name='publisher_update'),
+    path('publisher/delete/<int:pk>/',  PublisherDelete.as_view(), name='publisher_delete'),
 
-    # path('test/', test),
 ]
