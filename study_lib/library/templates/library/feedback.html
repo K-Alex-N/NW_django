@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+            <div class="card shadow-lg mb-5">
+                <div class="card-body p-sm-5">
+                    <h2 class="text-center text-dark mb-4">Обратная связь</h2>
+                    <form class="needs-validation" novalidate method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors | striptags }}</div>
+                    {% endif %}
+                    {% for f in form %}
+                        <div class="mb-3">
+                            <label class="form-check-label">{{f.label}}</label>
+                            {{ f }}
+                            {% if f.help_text %}
+                                <small class="form-text">{{ f.help_text | safe }}</small>
+                            {% endif %}
+                            {% if f.errors %}
+                                <div class="alert alert-danger" style="padding: 4px;">{{ f.errors | striptags }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+
+
+                        <button class="btn btn-primary d-block w-100" type="submit">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

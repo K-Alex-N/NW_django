@@ -9,6 +9,8 @@ urlpatterns = [
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
 
+    path('feedback/', feedback, name='feedback'),
+
     path('book/list/',             BookList.as_view(), name='book_list'),
     path('book/<int:id>/',         BookDetail.as_view(), name='book_detail'),
     path('book/add/',              BookCreate.as_view(), name='book_create'),

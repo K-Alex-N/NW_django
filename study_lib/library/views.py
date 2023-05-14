@@ -1,5 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -8,6 +9,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from library.forms import *
 from library.models import *
 from library.utils import *
+from study_lib import settings
 
 
 def home(request):
@@ -25,7 +27,23 @@ def page_not_found(request, exception):
 # Feedback
 # ---------------------------------------------------------------- #
 
-def feedback():
+def feedback(request):
+    if request.method == "POST":
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            msg = form.cleaned_data['message']
+            mail = send_mail(
+                'Спасибо за обратную связь',
+                f'Ваще обращение принято.\n{msg}',
+                settings.EMAIL_HOST_USER,
+                [user.email],
+                fail_silently=False
+            )
+            if mail:
+                return redirect('home')
+    else:
+        form = FeedbackForm()
+    return render(request, 'library/feedback.html', {'form': form, 'menu': menu})
 
 
 # ---------------------------------------------------------------- #

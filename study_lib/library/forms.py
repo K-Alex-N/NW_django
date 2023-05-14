@@ -4,6 +4,27 @@ from django.contrib.auth.models import User
 
 from library.models import Author, Book
 
+# ---------------------------------------------------------------- #
+# Feedback
+# ---------------------------------------------------------------- #
+
+FEEDBACK_TYPES = [
+    (1, "Предложение"),
+    (2, "Сообщение об ошибке"),
+    (3, "Вопрос"),
+    (4, "Другое"),
+]
+
+class FeedbackForm(forms.Form):
+    type = forms.ChoiceField(
+        label='Тип сообщения',
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        choices=FEEDBACK_TYPES)
+
+    message = forms.CharField(
+        label='Cообщение',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
+
 
 # ---------------------------------------------------------------- #
 # Auth
