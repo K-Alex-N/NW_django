@@ -9,6 +9,7 @@ class Book(models.Model):
     publisher = models.ForeignKey('Publisher', on_delete=models.SET_NULL, null=True, verbose_name='издательство')
     description = models.TextField(verbose_name='описание')
     price = models.IntegerField(verbose_name='цена')
+    # default value
     is_not_visible = models.BooleanField(default=False, verbose_name='скрыть')
     # blank=True
     image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, verbose_name='изображение')

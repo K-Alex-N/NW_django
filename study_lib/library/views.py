@@ -20,10 +20,6 @@ from study_lib import settings
 #     return render(request, 'library/index.html', {'title': 'Домашняя страница', 'menu': menu_copy})
 
 
-# def plus(a,b):
-#     return a+b
-
-
 def page_not_found(request, exception):
     return HttpResponseNotFound('not found')
 
