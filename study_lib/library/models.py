@@ -35,6 +35,7 @@ class Book(models.Model):
 
 class Author(models.Model):
     name = models.CharField(max_length=200, unique=True, db_index=True, verbose_name='автор')
+    # blank=True
     biography = models.TextField(blank=True, verbose_name='биография')
 
     def __str__(self):
@@ -51,10 +52,11 @@ class Author(models.Model):
 
 class Publisher(models.Model):
     name = models.CharField(max_length=200, db_index=True, verbose_name='издательство')
-    description = models.TextField(blank=True, verbose_name='описание')
     contact_name = models.CharField(max_length=200, verbose_name='ФИО агента')
     email = models.EmailField(unique=True, verbose_name='почта')
     phone_number = models.CharField(max_length=20, unique=True, verbose_name='телефон')
+    # blank=True
+    description = models.TextField(blank=True, verbose_name='описание')
 
     def __str__(self):
         return self.name

@@ -13,7 +13,7 @@ fields and any messages that your code will generate for errors.
 
 from unittest import TestCase
 
-from library.forms import BookForm
+from library.forms import *
 from library.models import *
 
 
@@ -22,12 +22,10 @@ class ModelsAndFormsTests(TestCase):
     def setUpTestData(cls):
         Author.objects.create(
             name='name',
-            biography='biography',
         )
 
         Publisher.objects.create(
             name='name',
-            description='description',
             contact_name='contact_name',
             email='email@email.email',
             phone_number='phone_number',
@@ -35,8 +33,8 @@ class ModelsAndFormsTests(TestCase):
 
         Book.objects.create(
             name='name',
-            author='1',
-            publisher='1',
+            author=1,
+            publisher=1,
             description='description',
             price=1,
         )
