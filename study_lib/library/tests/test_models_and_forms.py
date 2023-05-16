@@ -11,7 +11,7 @@ However you would need to test any additional validation that you expect to be p
 fields and any messages that your code will generate for errors.
 """
 
-from unittest import TestCase
+from django.test import TestCase
 
 from library.forms import *
 from library.models import *
@@ -20,22 +20,22 @@ from library.models import *
 class ModelsAndFormsTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Author.objects.create(
-            name='name',
-        )
+        a = Author(name='x')
+        a.save()
 
-        Publisher.objects.create(
-            name='name',
-            contact_name='contact_name',
+        p = Publisher(
+            name='x',
+            contact_name='x',
             email='email@email.email',
-            phone_number='phone_number',
+            phone_number='x',
         )
+        p.save()
 
         Book.objects.create(
-            name='name',
-            author=1,
-            publisher=1,
-            description='description',
+            name='x',
+            author=a,
+            publisher=p,
+            description='x',
             price=1,
         )
 
