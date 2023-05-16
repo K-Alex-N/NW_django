@@ -16,6 +16,12 @@ class AuthorAdmin(admin.ModelAdmin):
     search_fields = ['name', 'biography']
 
 
+class PublisherAdmin(admin.ModelAdmin):
+    list_display = ['name', 'contact_name', 'email', 'phone_number']
+    list_filter = ['name']
+    search_fields = ['name', 'contact_name']
+
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['order_date', 'address', 'delivery_price']
     list_filter = ['order_date']
@@ -31,5 +37,6 @@ class BookOrderAdmin(admin.ModelAdmin):
 
 admin.site.register(Book, BookAdmin)
 admin.site.register(Author, AuthorAdmin)
+admin.site.register(Publisher, PublisherAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(BookOrder, BookOrderAdmin)

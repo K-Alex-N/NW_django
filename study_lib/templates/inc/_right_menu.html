@@ -1,24 +1,14 @@
-<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-    <!--    <div class="container">-->
-    <!--        <div class="row d-flex justify-content-center">-->
-    <!--            <div class="col-12"> &lt;!&ndash; ширина. можно больше 8ми &ndash;&gt;-->
-<!--    <div class="card shadow-lg mb-5">-->
-        <!--        <div class="card-body p-sm-4">-->
-        <div class="container text-start">
+{% if user.groups.all.0.name == "staff_book_managment" %}
 
-            <!--        <ul class="list-unstyled">-->
-            <div class="list-group">
-
-
-                <!--                <ul class="col-md-auto mjustify-content-center">-->
-                {% for m in menu.right %}
-                <!--                        <li><a href="{{ m.url }}">{{ m.title }}</a></li>-->
-                <!--            <li class=""><a href="{{ m.url }}">{{ m.title }}</li>-->
-                <a href="{% url m.url %}" class="list-group-item list-group-item-action"
-                   style="font-size: 16px; padding-top: 2px; padding-bottom: 2px;">{{ m.title }}</a>
-                {% endfor %}
-
-            </div>
-        </div>
-<!--    </div>-->
-</nav>
+<div class="card shadow-lg mb-3">
+    <div class="list-group text-start list-group-flush">
+        {% for m in menu.right %}
+        <a href="{% url m.url %}"
+           class="list-group-item list-group-item-action"
+           style="font-size: 16px; padding-top: 4px; padding-bottom: 4px;">
+            {{ m.title }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

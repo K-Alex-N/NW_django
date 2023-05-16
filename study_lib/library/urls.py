@@ -3,7 +3,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', home, name='home'),
+    # path('', home, name='home'),
 
     path('register/',   RegisterUser.as_view(), name='register'),
     path('login/',      LoginUser.as_view(),    name='login'),
@@ -11,11 +11,12 @@ urlpatterns = [
 
     path('feedback/', feedback, name='feedback'),
 
-    path('book/list/',             BookList.as_view(),   name='book_list'),
-    path('book/<int:pk>/',         BookDetail.as_view(), name='book_detail'),
-    path('book/add/',              BookCreate.as_view(), name='book_create'),
-    path('book/update/<int:pk>/',  BookUpdate.as_view(), name='book_update'),
-    path('book/delete/<int:pk>/',  BookDelete.as_view(), name='book_delete'),
+    path('book/list/',             BookList.as_view(),              name='book_list'),
+    path('book/list_with_hidden/', BookListWithHidden.as_view(),    name='book_list_with_hidden'),
+    path('book/<int:pk>/',         BookDetail.as_view(),            name='book_detail'),
+    path('book/add/',              BookCreate.as_view(),            name='book_create'),
+    path('book/update/<int:pk>/',  BookUpdate.as_view(),            name='book_update'),
+    path('book/delete/<int:pk>/',  BookDelete.as_view(),            name='book_delete'),
 
     path('author/list/',               AuthorList.as_view(),   name='author_list'),
     path('author/<int:pk>/',           AuthorDetail.as_view(), name='author_detail'),

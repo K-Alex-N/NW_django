@@ -2,20 +2,23 @@
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
 {% for x in object_list %}
-    <div class="col-7">
-        <div class="card shadow-lg mb-3">
-            <div class="row">
-                <div class="col">
-                    <div class="card-body ">
-                        <p class="card-text">{{ x.name }}</p>
-                        <p class="card-text">{{ x.biography }}</p>
-                        <a href="{{ x.get_absolute_url }}">Подробнее</a>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+            <div class="card shadow-lg mb-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body ">
+                            <p class="card-text"><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></p>
+<!--                            <p class="card-text">{{ x.biography }}</p>-->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% empty %}
-    <h1>Ничего не найдено</h1>
+<h1>Ничего не найдено</h1>
 {% endfor %}
 {% endblock %}

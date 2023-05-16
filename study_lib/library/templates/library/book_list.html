@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row d-flex justify-content-center">
         <div class="col-8">
-            <div class="card shadow-lg mb-3">
+            <div class="card shadow-lg mb-3 {% if book.is_not_visible %} text-bg-secondary {% endif %}">
                 <div class="row">
                     <div class="col-3">
                         {% include 'library/inc/_book_image.html' %}

@@ -1,25 +1,23 @@
 {% extends 'base.html' %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
-{% for book in books %}
-    <div class="col-7">
-        <div class="card shadow-lg mb-3">
-            <div class="row">
-                <div class="col-3">
-                    {% include 'library/inc/_book_image.html' %}
-                </div>
-                <div class="col">
-                    <div class="card-body ">
-                        <h5 class="card-title">{{ book.author }}</h5>
-                        <p class="card-text">{{ book.name }}</p>
-                        <p class="card-text"><small class="text-muted">{{ book.price }} руб.</small></p>
-                        <a href="{{ book.get_absolute_url }}">Подробнее</a>
+{% for x in object_list %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+            <div class="card shadow-lg mb-3">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body ">
+                            <p class="card-text"><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% empty %}
-    <h1>Ничего не найдено</h1>
+<h1>Ничего не найдено</h1>
 {% endfor %}
 {% endblock %}

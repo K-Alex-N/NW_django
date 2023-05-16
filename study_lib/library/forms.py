@@ -15,6 +15,7 @@ FEEDBACK_TYPES = [
     (4, "Другое"),
 ]
 
+
 class FeedbackForm(forms.Form):
     type = forms.ChoiceField(
         label='Тип сообщения',
@@ -67,16 +68,20 @@ class LoginUserForm(AuthenticationForm):
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        msg = 'Если автора нет в списке, то вначале необходимо его <a href="/add_author/">создать</a>.'
+        msg = 'Если автора нет, то необходимо его <a href="/author/add/">создать</a>.'
         self.fields['author'].help_text = msg
+        msg2 = 'Если издательства нет, то необходимо его <a href="/publisher/add/">создать</a>.'
+        self.fields['publisher'].help_text = msg2
+
 
     class Meta:
         model = Book
-        fields = ['name', 'author', 'description', 'image', 'pages', 'cover', 'dimensions', 'public_date', 'price',
-                  'is_not_visible']
+        fields = ['name', 'author', 'publisher', 'description', 'image', 'pages', 'cover', 'dimensions', 'public_date',
+                  'price', 'is_not_visible']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название книги'}),
             'author': forms.Select(attrs={'class': 'form-select'}),
+            'publisher': forms.Select(attrs={'class': 'form-select'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание', 'rows': 3}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'type': 'file'}),
             'pages': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Количество страниц'}),
@@ -164,7 +169,7 @@ class BookForm(forms.ModelForm):
 class AuthorForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = ['name',  'biography']
+        fields = ['name', 'biography']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Автор'}),
             'biography': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Биография', 'rows': 7})
@@ -182,4 +187,3 @@ class PublisherForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'почта'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'телефон'}),
         }
-

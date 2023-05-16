@@ -8,7 +8,7 @@
         {% if f.help_text %}
             <small class="form-text">{{ f.help_text | safe }}</small>
         {% endif %}
-        {% if forloop.counter == 10 %}
+        {% if forloop.counter == 11 %}
             <label class="form-check-label" for="{{ f.id_for_label }}">{{f.label}}</label>
         {% endif %}
         {% if f.errors %}
