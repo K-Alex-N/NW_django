@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Корзина{% endblock %}
+{% block content %}
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Фрукт</th>
+                <th scope="col">Картинка</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Цена за шт</th>
+                <th scope="col">Валюта</th>
+                <th scope="col">Общая цена</th>
+                <th scope="col">Удаление</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in basket %}
+                {% with book=item.book %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'book_detail' book.pk %}">
+                                {{ book.name }}
+                            </a>
+                        </td>
+                        <td>
+                            {% include 'inc/_book_image.html' %}
+                        </td>
+                        <td>
+                            {{ item.count_prod }}
+                        </td>
+                        <td>
+                            {{ item.price_prod }}
+                        </td>
+                        <td> руб. </td>
+                        <td>
+                            {{ item.total_price }}
+                        </td>
+                        <td>
+                            <a href="{% url 'basket_remove' book.pk %}">Удалить</a>
+                        </td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}
+            <tr>
+                <td>Всего:</td>
+                <td colspan="4"></td>
+                <td>{{ basket.get_total_price }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <a href="{% url 'basket_clear' %}" class="btn btn-danger">Очистить</a>
+            <a href="#" class="btn btn-warning">Оформить заказ</a>
+        </div>
+    </div>
+{% endblock %}

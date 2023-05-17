@@ -27,6 +27,7 @@ from study_lib import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('library.urls')),
+    path('basket/', include('basket.urls')),
 ]
 
 if settings.DEBUG:

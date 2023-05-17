@@ -2,7 +2,9 @@
     <a class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none"> </a>
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         {% for m in menu.bottom_center %}
-            <li><a href="{% url m.url %}" class="nav-link px-2">{{ m.title }}</a></li>
+            {% if not m.for_authorized or m.for_authorized and user.is_authenticated%}
+                    <li><a href="{% url m.url %}" class="nav-link px-2">{{ m.title }}</a></li>
+            {% endif %}
         {% endfor %}
     </ul>
 

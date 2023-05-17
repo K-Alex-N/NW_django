@@ -3,25 +3,62 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.http import HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.http import HttpResponseNotFound, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
+from basket.forms import BasketAddProductForm
 from library.forms import *
 from library.models import *
+from library.serializers import BookSerializer
 from library.utils import *
 from study_lib import settings
 
 
-# def home(request):
-#     menu_copy = deepcopy(menu)
-#     menu_copy['bottom_center'].pop()
-#     return render(request, 'library/index.html', {'title': 'Домашняя страница', 'menu': menu_copy})
-
-
 def page_not_found(request, exception):
     return HttpResponseNotFound('not found')
+
+
+# ---------------------------------------------------------------- #
+# API
+# ---------------------------------------------------------------- #
+
+@api_view(['GET', 'POST'])
+def book_api_list(request):
+    if request.method == 'GET':
+        book_list = Book.objects.all()
+        serializer = BookSerializer(book_list, many=True)
+        return Response({'book_list': serializer.data})
+    elif request.method == 'POST':
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def book_api_detail(request, pk, format=None):
+    book_obj = get_object_or_404(Book, pk=pk)
+    if not book_obj.is_not_visible:
+        if request.method == 'GET':
+            serializer = BookSerializer(book_obj)
+            return Response(serializer.data)
+        elif request.method == 'PUT':
+            serializer = BookSerializer(book_obj, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'msg': 'Data added successfully', 'book': serializer.data})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        elif request.method == 'DELETE':
+            book_obj.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 # ---------------------------------------------------------------- #
@@ -98,6 +135,7 @@ class BookMixin:
 class BookList(DataMixin, BookMixin, ListView):
     title = 'Список книг'
     queryset = Book.objects.filter(is_not_visible=False)
+    basket_form = BasketAddProductForm()
 
 
 class BookListWithHidden(DataMixin, BookMixin, ListView):

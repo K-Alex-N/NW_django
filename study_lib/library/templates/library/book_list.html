@@ -8,7 +8,7 @@
             <div class="card shadow-lg mb-3 {% if book.is_not_visible %} text-bg-secondary {% endif %}">
                 <div class="row">
                     <div class="col-3">
-                        {% include 'library/inc/_book_image.html' %}
+                        {% include 'inc/_book_image.html' %}
                     </div>
                     <div class="col">
                         <div class="card-body ">
@@ -16,6 +16,15 @@
                             <p class="card-text">{{ book.name }}</p>
                             <p class="card-text"><small class="text-muted">{{ book.price }} руб.</small></p>
                             <a href="{{ book.get_absolute_url }}">Подробнее</a>
+                            {% if basket_form and user.is %}
+                            <div class="container">
+                                <form method="post" action="{% url 'basket_add' book.pk %}">
+                                    {% csrf_token %}
+                                    {{ basket_form }}
+                                    <input type="submit" class="btn btn-success" value="Добавить в корзину">
+                                </form>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,8 @@ menu = {
     'bottom_center': [
         # {'title': 'Home',           'url': 'home'},
         {'title': 'Книги',          'url': 'book_list'},
-        {'title': 'Обратная связь', 'url': 'feedback'},
+        {'title': 'Обратная связь', 'url': 'feedback',      'for_authorized': True},
+        {'title': 'Корзина',        'url': 'basket_list',   'for_authorized': True},
     ],
     'right': [
         {'title': 'Список книг',            'url': 'book_list_with_hidden'},
@@ -19,6 +20,7 @@ menu = {
 
 class DataMixin:
     title = None
+    basket_form = None
 
     def get_title(self):
         return self.title
@@ -31,6 +33,9 @@ class DataMixin:
         if not self.request.user.is_authenticated:
             menu_copy['bottom_center'].pop()
         context['menu'] = menu_copy
+
+        if self.basket_form:
+            context['basket_form'] = self.basket_form
 
         return context
 
