@@ -24,11 +24,7 @@ def page_not_found(request, exception):
 
 
 def home(request):
-    context = {
-        'title': 'Домашняя страница',
-        'menu': menu,
-    }
-    return render(request, 'library/index.html', context=context)
+    return render(request, 'library/index.html', context={'title': 'Домашняя страница', 'menu': menu})
 
 
 # ---------------------------------------------------------------- #
