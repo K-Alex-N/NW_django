@@ -82,21 +82,17 @@ WSGI_APPLICATION = 'study_lib.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': raw_config['db']['database'],
+        'USER': raw_config['db']['user'],
+        'PASSWORD': raw_config['db']['password'],
+        'HOST': raw_config['db']['host'],
+        'PORT': raw_config['db']['port'],
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# db = 'dev_db' # change according to status (dev_db or prod_db)
-# user =      raw_config[db]['user']
-# password =  raw_config[db]['password']
-# host =      raw_config[db]['host']
-# port =      raw_config[db]['port']
-# database =  raw_config[db]['database']
-#
-# if db == 'dev_db':
-#     debug = True
-# elif db == 'prod_db':
-#     debug = False
+
 
 
 # Password validation
