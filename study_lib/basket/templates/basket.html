@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}Корзина{% endblock %}
 {% block content %}
+{% if basket %}
     <div class="container">
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Фрукт</th>
-                <th scope="col">Картинка</th>
+                <th scope="col">Книга</th>
+                <th scope="col">Изображение</th>
+                <th scope="col">Цена</th>
                 <th scope="col">Количество</th>
-                <th scope="col">Цена за шт</th>
-                <th scope="col">Валюта</th>
-                <th scope="col">Общая цена</th>
+                <th scope="col">Итоговая цена</th>
                 <th scope="col">Удаление</th>
             </tr>
             </thead>
@@ -18,34 +18,33 @@
             {% for item in basket %}
                 {% with book=item.book %}
                     <tr>
-                        <td>
+                        <td style="width: 400px;">
                             <a href="{% url 'book_detail' book.pk %}">
                                 {{ book.name }}
                             </a>
                         </td>
-                        <td>
+                        <td style="width: 120px;">
                             {% include 'inc/_book_image.html' %}
+                        </td>
+                        <td>
+                            {{ item.price_prod }} руб.
                         </td>
                         <td>
                             {{ item.count_prod }}
                         </td>
                         <td>
-                            {{ item.price_prod }}
-                        </td>
-                        <td> руб. </td>
-                        <td>
-                            {{ item.total_price }}
+                            {{ item.total_price }} руб.
                         </td>
                         <td>
-                            <a href="{% url 'basket_remove' book.pk %}">Удалить</a>
+                            <a href="{% url 'basket_remove' book.pk %}" class="btn btn-outline-danger btn-sm">Х</a>
                         </td>
                     </tr>
                 {% endwith %}
             {% endfor %}
             <tr>
                 <td>Всего:</td>
-                <td colspan="4"></td>
-                <td>{{ basket.get_total_price }}</td>
+                <td colspan="3"></td>
+                <td>{{ basket.get_total_price }} руб.</td>
             </tr>
             </tbody>
         </table>
@@ -55,4 +54,7 @@
             <a href="#" class="btn btn-warning">Оформить заказ</a>
         </div>
     </div>
+{% else %}
+    <h1 class="text-center">Корзина пуста</h1>
+{% endif %}
 {% endblock %}

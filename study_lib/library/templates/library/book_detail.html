@@ -7,7 +7,6 @@
             <div class="card shadow-lg mb-5">
                 <div class="card-body p-sm-5">
                     <h2 class="text-center text-dark mb-4">{{ book.name }}</h2>
-
                     {% include 'inc/_book_image.html' %}
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
@@ -34,18 +33,27 @@
                         <li class="list-group-item"><strong>Цена: </strong>{{ book.price }} руб.</li>
                     </ul>
                     <div class="row text-end">
+                        {% if user.is_authenticated and not user.is_staff %}
+                            <div class="container">
+                                <form method="post" action="{% url 'basket_add' book.pk %}">
+                                    {% csrf_token %}
+                                    {{ basket_form }}
+                                    <input type="submit" class="btn btn-success" value="Добавить в корзину">
+                                </form>
+                            </div>
+                        {% endif %}
                         {% if perms.library.change_book %}
-                        <div class="col">
-                            <a href="{% url 'book_update' book.pk %}" class="btn btn-outline-primary me-2" type="button">Изменить</a>
-                        </div>
+                            <div class="col">
+                                <a href="{% url 'book_update' book.pk %}" class="btn btn-outline-primary me-2" type="button">Изменить</a>
+                            </div>
                         {% endif %}
                         {% if perms.library.delete_book %}
-                        <div class="col-auto">
-                            <form action="{% url 'book_delete' book.pk %}" method="post">
-                                {% csrf_token %}
-                                <input class="btn btn-outline-danger me-2" type="submit" value="Удалить">
-                            </form>
-                        </div>
+                            <div class="col-auto">
+                                <form action="{% url 'book_delete' book.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <input class="btn btn-outline-danger me-2" type="submit" value="Удалить">
+                                </form>
+                            </div>
                         {% endif %}
                     </div>
                 </div>

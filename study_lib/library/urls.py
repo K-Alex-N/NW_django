@@ -4,14 +4,15 @@ from .views import *
 
 urlpatterns = [
 
+    path('/', home, name='home'),
+    path('feedback/', feedback, name='feedback'),
+
     path('api/book', book_api_list, name='book_api_list'),
     path('api/book/<int:pk>', book_api_detail, name='book_api_detail'),
 
     path('register/',   RegisterUser.as_view(), name='register'),
     path('login/',      LoginUser.as_view(),    name='login'),
     path('logout/',     logout_user,            name='logout'),
-
-    path('feedback/', feedback, name='feedback'),
 
     path('book/list/',             BookList.as_view(),              name='book_list'),
     path('book/list_with_hidden/', BookListWithHidden.as_view(),    name='book_list_with_hidden'),

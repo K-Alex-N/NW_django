@@ -23,6 +23,14 @@ def page_not_found(request, exception):
     return HttpResponseNotFound('not found')
 
 
+def home(request):
+    context = {
+        'title': 'Домашняя страница',
+        'menu': menu,
+    }
+    return render(request, 'library/index.html', context=context)
+
+
 # ---------------------------------------------------------------- #
 # API
 # ---------------------------------------------------------------- #
@@ -127,37 +135,39 @@ class PermissionBookMixin(PermissionRequiredMixin):
     ]
 
 
-class BookMixin:
+class BookMixin(DataMixin):
     model = Book
     paginate_by = 3
 
 
-class BookList(DataMixin, BookMixin, ListView):
+class BookList(BookMixin, ListView):
     title = 'Список книг'
     queryset = Book.objects.filter(is_not_visible=False)
     basket_form = BasketAddProductForm()
 
 
-class BookListWithHidden(DataMixin, BookMixin, ListView):
+class BookListWithHidden(BookMixin, ListView):
     title = 'Список книг'
 
 
-class BookDetail(DataMixin, BookMixin, DetailView):
+class BookDetail(BookMixin, DetailView):
+    basket_form = BasketAddProductForm()
+
     def get_title(self):
         return self.object.name
 
 
-class BookCreate(DataMixin, BookMixin, PermissionBookMixin, CreateView):
+class BookCreate(BookMixin, PermissionBookMixin, CreateView):
     form_class = BookForm
     title = 'Добавить книгу'
 
 
-class BookUpdate(DataMixin, BookMixin, PermissionBookMixin, UpdateView):
+class BookUpdate(BookMixin, PermissionBookMixin, UpdateView):
     form_class = BookForm
     title = 'Изменить книгу'
 
 
-class BookDelete(DataMixin, BookMixin, PermissionBookMixin, DeleteView):
+class BookDelete(BookMixin, PermissionBookMixin, DeleteView):
     success_url = reverse_lazy('book_list')
 
 
@@ -165,7 +175,11 @@ class BookDelete(DataMixin, BookMixin, PermissionBookMixin, DeleteView):
 # Author
 # ---------------------------------------------------------------- #
 
-class PermissionAuthorMixin(PermissionRequiredMixin):
+
+class AuthorMixin(DataMixin, PermissionRequiredMixin):
+    model = Author
+    paginate_by = 10
+
     permission_required = [
         "library.view_author",
         "library.add_author",
@@ -174,31 +188,26 @@ class PermissionAuthorMixin(PermissionRequiredMixin):
     ]
 
 
-class AuthorMixin:
-    model = Author
-    paginate_by = 10
-
-
-class AuthorList(AuthorMixin, DataMixin, ListView):
+class AuthorList(AuthorMixin, ListView):
     title = 'Список авторов'
 
 
-class AuthorDetail(AuthorMixin, DataMixin, DetailView):
+class AuthorDetail(AuthorMixin, DetailView):
     def get_title(self):
         return self.object.name
 
 
-class AuthorCreate(AuthorMixin, DataMixin, PermissionAuthorMixin, CreateView):
+class AuthorCreate(AuthorMixin, CreateView):
     form_class = AuthorForm
     title = 'Добавить автора'
 
 
-class AuthorUpdate(AuthorMixin, DataMixin, PermissionAuthorMixin, UpdateView):
+class AuthorUpdate(AuthorMixin, UpdateView):
     form_class = AuthorForm
     title = 'Изменить автора'
 
 
-class AuthorDelete(AuthorMixin, DataMixin, PermissionAuthorMixin, DeleteView):
+class AuthorDelete(AuthorMixin, DeleteView):
     success_url = reverse_lazy('author_list')
 
 
@@ -206,7 +215,10 @@ class AuthorDelete(AuthorMixin, DataMixin, PermissionAuthorMixin, DeleteView):
 # Publisher
 # ---------------------------------------------------------------- #
 
-class PermissionPublisherMixin(PermissionRequiredMixin):
+class PublisherMixin(DataMixin, PermissionRequiredMixin):
+    model = Publisher
+    paginate_by = 10
+
     permission_required = [
         "library.view_publisher",
         "library.add_publisher",
@@ -215,29 +227,24 @@ class PermissionPublisherMixin(PermissionRequiredMixin):
     ]
 
 
-class PublisherMixin:
-    model = Publisher
-    paginate_by = 10
-
-
-class PublisherList(PublisherMixin, DataMixin, PermissionPublisherMixin, ListView):
+class PublisherList(PublisherMixin, ListView):
     title = 'Список издательств'
 
 
-class PublisherDetail(PublisherMixin, DataMixin, PermissionPublisherMixin, DetailView):
+class PublisherDetail(PublisherMixin, DetailView):
     def get_title(self):
         return self.object.name
 
 
-class PublisherCreate(PublisherMixin, DataMixin, PermissionPublisherMixin, CreateView):
+class PublisherCreate(PublisherMixin, CreateView):
     form_class = PublisherForm
     title = 'Добавить издательство'
 
 
-class PublisherUpdate(PublisherMixin, DataMixin, PermissionPublisherMixin, UpdateView):
+class PublisherUpdate(PublisherMixin, UpdateView):
     form_class = PublisherForm
     title = 'Изменить издательство'
 
 
-class PublisherDelete(PublisherMixin, DataMixin, PermissionPublisherMixin, DeleteView):
+class PublisherDelete(PublisherMixin, DeleteView):
     success_url = reverse_lazy('publisher_list')

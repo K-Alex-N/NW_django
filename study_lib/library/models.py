@@ -70,12 +70,11 @@ class Publisher(models.Model):
         ordering = ['id']
 
 
-# изменение (объектов от Order и BookOrder) только в admin panel
-
+# изменение (объектов Order и BookOrder) только в admin-панели
 class Order(models.Model):
-    order_date = models.DateField(auto_now_add=True)
-    address = models.CharField(max_length=200)
-    delivery_price = models.IntegerField()
+    order_date = models.DateField(auto_now_add=True, verbose_name='дата заказа')
+    address = models.CharField(max_length=200, verbose_name='адрес')
+    delivery_price = models.IntegerField(verbose_name='стоимость доставки')
 
     books = models.ManyToManyField(Book, through='BookOrder')
 
@@ -89,12 +88,10 @@ class Order(models.Model):
 
 
 class BookOrder(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField()
-    price = models.IntegerField()
-
-    # status = (1: выполнен, 2 принят...)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True, verbose_name='книга')
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, verbose_name='номер заказа')
+    quantity = models.IntegerField(verbose_name='количество')
+    price = models.IntegerField(verbose_name='цена')
 
     def __str__(self):
         return str(self.pk)

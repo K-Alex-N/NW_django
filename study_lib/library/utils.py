@@ -2,7 +2,7 @@ from copy import deepcopy
 
 menu = {
     'bottom_center': [
-        # {'title': 'Home',           'url': 'home'},
+        {'title': 'Home',           'url': 'home'},
         {'title': 'Книги',          'url': 'book_list'},
         {'title': 'Обратная связь', 'url': 'feedback',      'for_authorized': True},
         {'title': 'Корзина',        'url': 'basket_list',   'for_authorized': True},
