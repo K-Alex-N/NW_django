@@ -1,6 +1,0 @@
-{% load static %}
-{% if book.image %}
-    <img src="{{ book.image.url }}" class="img-fluid rounded-start" alt="..." width="200">
-{% else %}
-    <img src="{% static 'images/instead_of_book_image.png' %}" class="img-fluid rounded-start" alt="..." width="200">
-{% endif %}
